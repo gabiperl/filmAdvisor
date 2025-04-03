@@ -74,8 +74,12 @@
                     track $index) 
                     {
                     <tr>
-                        <td>{{recommendations.movie.Title}}</td>
-                        <td></td>
+                        <td>
+                            <a href="https://www.imdb.com/es-es/title/{{recommendations.movie.imdbID}}" target="_blank">
+                            {{recommendations.movie.Title}}
+                            </a>
+                        </td>
+                        <td>{{recommendations.movie.Genre}}</td>
                         <td>{{recommendations.movie.Year}}</td>
                         <td>{{recommendations.movie.imdbRating | starsRating}}</td>
                         <td>{{getNameById(recommendations.toUser)}}</td>
