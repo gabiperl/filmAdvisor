@@ -1,0 +1,89 @@
+<div class="row">
+    <div class="col-lg-3">
+        <h5 align="right">User name</h5>
+    </div> 
+    <div class="col-lg-6">
+        <select [(ngModel)]="selValue" #loggedUser (change)="setUserLogged(loggedUser.value)" class="form-select" aria-label="Default select example">
+            <option value="">Select user name</option>
+            @for (user of getUsuarios(); track $index) {
+                <option value="{{ user.id }}">{{ user.name }}</option>
+            }
+        </select>
+    </div>
+    <div class="col-lg-3"></div>
+</div>
+
+<div class="row">
+    <div class="col-lg-2">
+        <h5 align="right">Someone recommended you these films...</h5>
+    </div> 
+    <div class="col-lg-9">
+        <table class="table table-striped" aria-labelledby="dataTable">
+            <thead>
+                <tr>
+                    <th scope="col">Movie</th>
+                    <th scope="col">Genre</th>
+                    <th scope="col">Year</th>
+                    <th scope="col">Rating</th>
+                    <th scope="col">Recommended by</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (recommendations of getMoviesRecommendedTo(loggedUser.value); 
+                    track $index) 
+                    {
+                    <tr>
+                        <td>
+                            <a href="https://www.imdb.com/es-es/title/{{recommendations.movie.imdbID}}" target="_blank">
+                            {{recommendations.movie.Title}}
+                            </a>
+                        </td>
+                            
+                        <td>{{recommendations.movie.Genre}}</td>
+                        <td>{{recommendations.movie.Year}}</td>
+                        <td>{{recommendations.movie.imdbRating | starsRating}}</td>
+                        <td>{{getNameById(recommendations.fromUser)}}</td>
+                        <td> <button class="btn btn-danger" (click)="RemoveRecommendation(recommendations)">Remove</button> </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="col-lg-1"></div>
+</div>
+
+<div class="row">
+    <div class="col-lg-2">
+        <h5 align="right">You recommended these films...</h5>
+    </div> 
+    <div class="col-lg-9">
+        <table class="table table-striped" aria-labelledby="dataTable">
+            <thead>
+                <tr>
+                    <th scope="col">Movie</th>
+                    <th scope="col">Genre</th>
+                    <th scope="col">Year</th>
+                    <th scope="col">Rating</th>
+                    <th scope="col">Recommended to</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (recommendations of getMoviesRecommendedFrom(loggedUser.value); 
+                    track $index) 
+                    {
+                    <tr>
+                        <td>{{recommendations.movie.Title}}</td>
+                        <td></td>
+                        <td>{{recommendations.movie.Year}}</td>
+                        <td>{{recommendations.movie.imdbRating | starsRating}}</td>
+                        <td>{{getNameById(recommendations.toUser)}}</td>
+                        <td> <button class="btn btn-danger" (click)="RemoveRecommendation(recommendations)">Remove</button> </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="col-lg-1"></div>
+</div>

@@ -1,0 +1,45 @@
+<div class="row">
+    <div class="col-lg-4">
+        <div class="input-group mb-3">
+            <input [(ngModel)]="patron" (keyup.enter)="searchMoviesByString(patron)" type="text" class="form-control" placeholder="search movies by title..."
+                    aria-label="search movies by title" aria-describedby="basic-addon2">
+            <div class="input-group-append">
+                <button (click)="searchMoviesByString(patron)" class="btn btn-warning" type="button">
+                    Search
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-2">
+        @if (getSelectedMovie())
+        {<app-tarjeta [datos]="getSelectedMovie()" />}
+        
+    </div>
+    <div class="col-lg-6">
+        <blockquote class="blockquote">
+            You are logged in as... <i class="text-success">{{getNameById(getLoggedUser())}}</i>. Select target user:
+        </blockquote>
+        <div class="input-group mb-3">
+            <select [(ngModel)]="userToRecommend" class="form-select" aria-label="Default select example">
+                <option value="">Select a user</option>
+                @for(usuario of getUsuarios(); track $index) {
+                    <option value="{{ usuario.id }}">{{ usuario.name }}</option>
+                }
+            </select>
+            <div class="input-group-append">
+                <button  (click)="recommend()" class="btn btn-warning">RECOMMEND!</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <h3>Search results</h3>
+    <div class="row row-cols-md-5">
+        @for(pelicula of getMovies(); track $index) {
+            <app-tarjeta (click)="setMovieToRecommend(pelicula)" [datos]="pelicula" />
+            <!-- ! Para hacer esta llamada, se necesita un INPUT en el hijo: tarjeta, siendo
+            el nombre del INPUT, lo que existe entre corchetes -->
+            }
+    </div>
+</div>
